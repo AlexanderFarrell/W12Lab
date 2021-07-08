@@ -1,0 +1,177 @@
+<article>
+    <h1>W12 Lab: Bell-LaPadula</h1>
+    <h5>See Course Calendar for Due Date</h5>
+
+    <p>It is often necessary for a computer system to provide Confidentiality assurances 
+    		to a data store when more than one type of user requires access to the system. 
+            You and your team is assigned to retrofit an existing program by implementing the Bell-LaPadula.</p>
+            
+    <h3>Program Description</h3>
+    <p>During WWII, the military and political leaders used a message-system developed in C++.
+    	It is shocking, I know. 
+        C++ would not be develop for another 45 years.
+        However, the system was deemed to be quite unusable because it did not provide Confidentiality assurances.
+        This is why they hired you, a high powered programmer from the future, to help.</p>
+    <p>Realizing that they are just looking for Confidentiality assurances,
+    	you immediately think of Bell-LaPadula.
+        Never mind that neither Bell nor LaPadula will even think of this for another 30 years.</p>
+    <p>Taking a look at the existing source-code, you sketch out a few diagrams.
+    	First, the UML Class diagram describing three classes: <code>Message</code>, <code>Messages</code>, and <code>Interact</code>.</p>
+    <img src="453.12.Lab/ClassDiagram.jpg" border="0" alt="UML Class Diagram" title="UML Class Diagram" style="width:100%">
+    <p>Next, the DFD describing how data flows from the user into the system and out of the system back to the user:</p>
+    <img src="453.12.Lab/DFD.jpg" border="0" alt="Data Flow Diagram" title="Data Flow Diagram" style="width:100%">
+   
+   	<p>The following resources are provided in <a href="453.12.Lab/Lab12.html">Lab12.html</a>. This includes:</p>
+    <ul>
+        <li><code>control.h</code> : A placeholder where you will
+            put your Bell-LaPadula access control logic</li>
+        <li><code>interact.h</code> : The class definition of the user interface</li>
+        <li><code>interact.cpp</code> : The class implementation
+            of <code>Interact</code></li>
+        <li><code>message.h</code> : The class definition encapsulating
+            a single message</li>
+        <li><code>message.cpp</code> : The class implementation of
+            <code>Message</code></li>
+        <li><code>messages.h</code> : The class definition encapsulating
+            the collection of messages</li>
+        <li><code>messages.cpp</code> : The class implementation of
+            <code>Messages</code></li>
+        <li><code>lab12.cpp</code> : The interaction loop and <code>main()</code></li>
+        <li><code>messages.txt</code> : The secret data that the program will maintain</li>
+    </ul>
+            
+   
+    <h3>Policy</h3>
+    <p>The program reads a collection of messages from a file. 
+    	Each message has an author and a security level. 
+        The security levels are:</p>
+    <ul>
+       <li>Public</li>
+       <li>Confidential</li>
+       <li>Privileged</li>
+       <li>Secret</li>
+    </ul>
+    
+    <p>In addition to this, there are several users on the system. 
+    	Each user has a security level associated with him/her:</p>
+    <ul>
+       <li>AdmiralAbe : Secret</li>
+       <li>CaptainCharlie : Privileged</li>
+       <li>SeamanSam : Confidential</li>
+       <li>SeamanSue : Confidential</li>
+       <li>SeamanSly : Confidential</li>
+       <li><i>anyone else</i> : Public</li>
+    </ul>
+ 	<p>Note that every user has the same highly-secure password: "password". The authentication code is in <code>interact.cpp</code></p>
+        
+    <h3>Assignment</h3>
+    <p>Your job is to implement Bell-LaPadula into the code provided.
+    	This includes the following steps:</p>
+    <ol>
+    	<li>Copy the program files to your own directory.</li>
+        <li>Generate a dozen or so test cases to capture how your solution should work.</li>
+        <li>Implement the Bell-LaPadula data-structure and access-control check as described in the reading.<br>
+        	<b>Hint:</b> For this component of the grade, it is not enough that your code "works like Bell-LaPadula" or
+    		even that your code has the same functionality.
+            It must exactly implement the access control checks as Bell and LaPadula describe it.
+            In order for us to provide confidentiality assurances to our users,
+            we need to rely on the mathematical proofs that Bell-LaPadula demonstrated in their paper.
+            This gives us assurances that our code will work as advertised.
+            When we "go rogue" and try to implement equivalent functionality,
+            then we will not have the same assurances.</li>
+        <li>Put the Bell-LaPadula access-control checks in the appropriate locations in the source code.<br>
+            <b>Hint:</b> Identify a trust boundary in the DFD and strengthen it with Bell-LaPadula checks.
+            Make sure that every public interface has these checks.
+            Imagine a king wishing to protect his palace from invaders.
+    		To increase his confidence that his palace will not be looted,
+            he creates a tall wall.
+            Unfortunately, he builds his wall only half-way around this palace.
+            Clearly this will be of little help:
+            the invaders will simply walk around to where the wall is missing!
+            The same is true with our code.
+            For us to provide assurances that our assets are protected,
+            every single entry and exit must be guarded by access control checks.</li>
+        <li>Implement the policy as stated above.<br>
+            <b>Hint:</b> The policy must be specified in such a way that changes can be made with minimal code changes.
+    		In other words, it should be "easy and intuitive" to change policy settings. 
+      		This means adding new users or groups should not require any modification of the logic of the program. 
+            For this assignment, it is OK to put the policy settings in data structures.
+            It is not OK to "bake in" the policy into the code. 
+            In other words, what would have to change if I were to add a dozen users
+            and a couple extra levels permissions?
+            If we were implementing policy for a typical organization, 
+    		we could fully expect that the policy would change from day to day.
+            Managers would want to add new groups,
+            users would be added or deleted, 
+            and organizational rules would change.
+            This is all part of normal operation for a company.
+            If you "baked in" the policy to the code, 
+            it would be very difficult to adapt to these changes.
+            Worse yet, you would likely make a mistake.
+            To combat this, we try to segment policy specification from access control integration, 
+            which is, in turn, separate from Bell-LaPadula implementation</li>
+        <li>Run the program a few times yourself. 
+        	First run it as AdmiralAbe. 
+            You should be able to view everything but change very little.
+            Next, run it as SeamanSam.
+            You should be able to view very little but change just about everything.</li>
+        <li>Test your solution with the test cases.</li>
+        <li>Create a lab report explaining how you implemented Bell-LaPadula.
+            This includes copy-pasting the actual code used to implement the access control mechanism.
+            Justify that your implementation is a faithful representation of the model Bell-LaPadula describe.
+            The report should also include how the access control mechanisms are integrated into the project.
+            This includes the code and a description of why that code is integrated at the best possible location.
+            Finally, provide the output of your program making sure that all the necessary test cases are covered.</li>
+        <li>Submit through I-Learn your lab report and all your source files.
+           The source files must be included as individual files, not as a single ZIP file.</li>
+    </ol>
+
+    <p>Your program will be graded according to the following rubric:</p>
+    <table class="rubric">
+      <tbody>
+        <tr>
+          <th>&nbsp;</th>
+          <th>Exceptional<br>100%</th>
+          <th>Good       <br>90% </th>
+          <th>Acceptable <br>70% </th>
+          <th>Developing <br>50% </th>
+          <th>Missing    <br>0%  </th>
+        </tr>
+        <tr>
+             <th>Test Cases<br>20%</th> 
+<!-- 100 --> <td>The test cases completely cover all the cases</td> 
+<!-- 90  --> <td>All the important test cases are covered</td> 
+<!-- 70  --> <td>The test cases provide a reasonable degree of coverage</td>
+<!-- 50  --> <td>Little thought went into the test cases</td> 
+<!-- 0   --> <td>Test cases are missing or of poor quality</td> 
+        </tr>
+        <tr>
+             <th>Bell-LaPadula<br>30%</th> 
+<!-- 100 --> <td>The Bell-LaPadula implementation is elegant and obviously accurate</td> 
+<!-- 90  --> <td>The Bell-LaPadula implementation is correct, but not elegant or obviously accurate in some way</td> 
+<!-- 70  --> <td>One aspect of the access control mechanism is not as Bell-LaPadula prescribes</td>
+<!-- 50  --> <td>The access control mechanism provides confidentiality assurances</td> 
+<!-- 0   --> <td>No attempt was made to implement confidentiality access control</td> 
+        </tr>
+        <tr>
+             <th>Integration<br>40%</th>
+<!-- 100 --> <td>A resource-level trust-boundary is completely integrated with access-control checks, code quality is excellent</td> 
+<!-- 90  --> <td>A resource-level trust-boundary has complete access-control checks,
+                but there is some redundancy in the checks</td>
+<!-- 70  --> <td>There exists a hole in trust-boundary so data can be retrieved
+                or change without an access-control checks</td>
+<!-- 50  --> <td>At least one access-control check is integrated into the program</td> 
+<!-- 0   --> <td>No attempt was made to integrate access-control checks into the program</td> 
+        </tr>
+        <tr>
+             <th>Policy specification<br>10%</th>
+<!-- 100 --> <td>It is "easy and intuitive" to set user and resource policy from within the code, code quality is excellent</td>
+<!-- 90  --> <td>All policy settings are specified using a data-structure; no code change is required.</td>
+<!-- 70  --> <td>Policy was algorithmically set; a code change is required
+                to add/remove users or add/remove a security level</td>
+<!-- 50  --> <td>Policy was included to some capacity</td>
+<!-- 0   --> <td>No attempt was made to integrate the policy</td>
+        </tr>
+      </tbody>
+    </table>
+   </article>
