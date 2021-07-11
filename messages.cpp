@@ -27,7 +27,9 @@ void Messages::display() const
     for (list <Message> :: const_iterator it = messages.begin();
          it != messages.end();
          ++it)
-        it->displayProperties();
+         {
+            it->displayProperties();
+         }
 }
 
 /***********************************************
@@ -39,8 +41,13 @@ void Messages::show(int id) const
     for (list <Message> :: const_iterator it = messages.begin();
          it != messages.end();
          ++it)
-        if (it->getID() == id)
-            it->displayText();
+        {
+            if (it->getID() == id){
+                if(!Security::securityConditionRead(it->getAssetControl(), Security::getSubjectControl()))
+                    throw "You do not have read access for this message";
+                it->displayText();
+            }
+        }
 }
 
 /***********************************************
@@ -52,8 +59,13 @@ void Messages::update(int id, const string & text)
     for (list <Message> :: iterator it = messages.begin();
          it != messages.end();
          ++it)
-        if (it->getID() == id)
-            it->updateText(text);
+        {
+            if (it->getID() == id){
+                if(!Security::securityConditionWrite(it->getAssetControl(), Security::getSubjectControl()))
+                    throw "You do not have write access for this message";
+                it->updateText(text);
+            }
+        }
 }
 
 /***********************************************
@@ -65,8 +77,14 @@ void Messages::remove(int id)
     for (list <Message> :: iterator it = messages.begin();
          it != messages.end();
          ++it)
-        if (it->getID() == id)
-            it->clear();
+        {
+            if (it->getID() == id){
+                if(!Security::securityConditionWrite( it->getAssetControl(), Security::getSubjectControl()))
+                    throw "You do not have permission to delete this message";
+                it->clear();
+            }
+                
+        }
 }
 
 /***********************************************
@@ -75,9 +93,10 @@ void Messages::remove(int id)
  **********************************************/
 void Messages::add(const string & text,
                    const string & author,
-                   const string & date)
+                   const string & date,
+                   const Control & assetControl)
 {
-    Message message(text, author, date);
+    Message message(text, author, date, assetControl);
     messages.push_back(message);
 }
 
@@ -111,7 +130,8 @@ void Messages::readMessages(const char * fileName)
 
         if (!fin.fail())
         {
-            Message message(text, author, date);
+            Control control; //dummy data
+            Message message(text, author, date, control);
             messages.push_back(message);
         }
     }

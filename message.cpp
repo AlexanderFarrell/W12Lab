@@ -30,12 +30,14 @@ Message ::  Message()
  **************************************************/
 Message::Message(const string & text,
                  const string & author,
-                 const string & date)
+                 const string & date,
+                 const Control & assetControl)
 {
     this->text = text;
     this->author = author;
     this->date = date;
     this->id = idNext++;
+    this->assetControl = assetControl;
     empty = false;
 }
 

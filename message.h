@@ -26,10 +26,14 @@ public:
     // the most commonly used constructor: create a message
     Message(const std::string & text,
             const std::string & author,
-            const std::string & date);
+            const std::string & date,
+            const Control & assetControl);
 
     // determine the unique ID of this message
     int getID() const { return id; }
+
+    // determine the assetControl of this message
+    Control getAssetControl() const { return assetControl; }
 
     // display the properties but not content of the message
     void displayProperties() const;
@@ -50,5 +54,5 @@ private:
     std::string text;         // the textual content of this message
     std::string author;       // the author of this message
     std::string date;         // the date this message was created
-    Control control;          // Added to the asset
+    Control assetControl;          // Added to the asset
 };

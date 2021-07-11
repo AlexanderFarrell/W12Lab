@@ -23,11 +23,11 @@ using namespace std;
  *************************************************************/
 const User users[] =
         {
-                { "AdmiralAbe",     "password" },
-                { "CaptainCharlie", "password" },
-                { "SeamanSam",      "password" },
-                { "SeamanSue",      "password" },
-                { "SeamanSly",      "password" }
+                { "AdmiralAbe",     "password", SECRET },
+                { "CaptainCharlie", "password", PRIVILEDGED},
+                { "SeamanSam",      "password", CONFIDENTIAL},
+                { "SeamanSue",      "password", CONFIDENTIAL},
+                { "SeamanSly",      "password", CONFIDENTIAL}
         };
 
 const int ID_INVALID = -1;
@@ -40,7 +40,8 @@ Interact::Interact(const string & userName,
                    const string & password,
                    Messages & messages)
 {
-    authenticate(userName, password);
+    this->subjectControl = authenticate(userName, password);
+    Security::setSubjectControl(subjectControl);
     this->userName = userName;
     this->pMessages = &messages;
 }
@@ -71,7 +72,8 @@ void Interact::add()
 {
     pMessages->add(promptForLine("message"),
                    userName,
-                   promptForLine("date"));
+                   promptForLine("date"),
+                   Security::getSubjectControl());
 }
 
 /****************************************************
@@ -81,6 +83,8 @@ void Interact::add()
 void Interact::update()
 {
     int id = promptForId("update");
+    // if(!Security::securityConditionWrite(pMessages[id].getAssetControl(), subjectControl))
+    //     throw "You do not have write access for this message";
     pMessages->update(id,
                       promptForLine("message"));
 }
@@ -91,6 +95,8 @@ void Interact::update()
  ***************************************************/
 void Interact::remove()
 {
+    // if(!Security::securityConditionWrite(assetControl, subjectControl))
+    //     throw "You do not have write access for this message";
     pMessages->remove(promptForId("delete"));
 }
 
@@ -140,6 +146,7 @@ Control Interact::authenticate(const string & userName,
     bool authenticated = false;
     if (ID_INVALID != id && password == string(users[id].password))
         authenticated = true;
+        return users[id].control;
 }
 
 /****************************************************

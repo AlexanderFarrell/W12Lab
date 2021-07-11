@@ -18,7 +18,7 @@
  * MESSAGES
  * The collection of high-tech messages
  ***********************************************/
-class Messages
+class Messages: public Security
 {
 public:
     // constructor: read a file to fill the messages
@@ -40,7 +40,8 @@ public:
     // add a new message
     void add(const std::string & text,
              const std::string & author,
-             const std::string & date);
+             const std::string & date,
+             const Control & assetControl);
 
 private:
     // the list of messages

@@ -17,17 +17,29 @@
  *      Integration -        Handled in Step 4. Leverage the Security Condition.
  */
 
-enum Control {
+enum Control{
     PUBLIC = 0,
     CONFIDENTIAL = 1,
     PRIVILEDGED = 2,
     SECRET = 3
 };
 
-bool securityConditionRead(Control asset, Control subject) {
-    return asset >= subject;
-}
+class Security{
+    public:
+        static void setSubjectControl(Control localSubjectControl){
+            subjectControl = localSubjectControl;
+        }
+        static Control getSubjectControl(){
+            return subjectControl;
+        }
+        static bool securityConditionRead(Control asset, Control subject) {
+            return asset >= subject;
+    }
 
-bool securityConditionWrite(Control asset, Control subject) {
-    return asset <= subject;
-}
+        static bool securityConditionWrite(Control asset, Control subject) {
+            return asset <= subject;
+    }
+    private:
+        static Control subjectControl;
+};
+

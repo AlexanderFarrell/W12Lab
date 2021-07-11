@@ -21,6 +21,7 @@ struct User
 {
     const char *name;
     const char *password;
+    const Control control;
 };
 
 /****************************************************
@@ -52,6 +53,7 @@ public:
 private:
     Messages * pMessages;
     std::string userName;
+    Control subjectControl;
 
     // prompt for a line of input
     std::string promptForLine(const char * verb) const;
