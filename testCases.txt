@@ -1,0 +1,115 @@
+*****************************
+******** Test Cases *********
+*****************************
+
+Test Case #1
+    Permission Type: Read-Down
+    Security Level: Secret
+
+    Expected Output: 
+        Can read messages of a lower clearance. I.e., Confidential messages.
+
+Test Case #2
+    Permission Type: Write-Down
+    Security Level: Secret
+    
+    Expected Output:
+        Cannot write to a lower clearance level. I.e., Secret can't write to public level documents
+
+Test Case #3
+    Permission Type: Read-Up
+    Security Level: Secret
+
+    Expected Output:
+        Can read anything because of highest clearance.
+
+Test Case #4
+    Permission Type: Write-Up
+    Security Level: Secret
+
+    Expected Output:
+        Can write to anything on same clearance because there is no higher clearance level.
+
+Test Case #5
+    Permission Type: Read-Down
+    Security Level: Privileged
+    
+    Expected Output:
+        Can read Privileged, Confidential, and public level documents.
+
+Test Case #6
+    Permission Type: Write-Down
+    Security Level: Privileged
+
+    Expected Output:
+        Can write to Privileged level messages but cannot write to any below Privileged. 
+
+Test Case #7
+    Permission Type: Read-Up
+    Security Level: Privileged
+
+    Expected Output:
+        Can read Privileged, Confidential, and public level messages, but not Secret.
+
+Test Case #8
+    Permission Type: Write-Up
+    Security Level: Privileged
+
+    Expected Output:
+        Can write to Privileged level clearance and higher but cannot read higher clearance level messages
+
+Test Case #9
+    Permission Type: Read-Down
+    Security Level: Confidential
+
+    Expected Output:
+        Can read Confidential level messages and below (Confidential and Public).
+
+Test Case #10
+    Permission Type: Write-Down
+    Security Level: Confidential
+
+    Expected Output:
+        Cannot write to lower clearance level (I.e., Public)
+
+Test Case #11
+    Permission Type: Read-Up
+    Security Level: Confidential
+
+    Expected Output:
+        Cannot read Privileged or Secret level clearance messages.
+
+Test Case #12
+    Permission Type: Write-Up
+    Security Level: Confidential
+
+    Expected Output:
+        Can write to higher clearance level messages but cannot read them.
+
+Test Case #13
+    Permission Type: Read-Down
+    Security Level: Public
+
+    Expected Output:
+        Can read only Public messages. Other messages of higher clearance will not be visibile.
+
+Test Case #14
+    Permission Type: Write-Down
+    Security Level: Public
+
+    Expected Output:
+        There are no lower clearance levels so no writing down would occur
+
+Test Case #15
+    Permission Type: Read-Up
+    Security Level: Public
+
+    Expected Output:
+        Restricted read up. No messages will be visibile of any higher clearance thatn Public.
+
+Test Case #16
+    Permission Type: Write-Up
+    Security Level: Public
+
+    Expected Output:
+        Writing up to other clearance levels is possible but the Public user will not be able to see them.
