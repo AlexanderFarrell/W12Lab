@@ -17,6 +17,8 @@
  *      Integration -        Handled in Step 4. Leverage the Security Condition.
  */
 
+using namespace std;
+
 enum Control{
     PUBLIC = 0,
     CONFIDENTIAL = 1,
@@ -24,22 +26,19 @@ enum Control{
     SECRET = 3
 };
 
+extern Control globalSubjectControl;
+
 class Security{
     public:
-        static void setSubjectControl(Control localSubjectControl){
-            subjectControl = localSubjectControl;
-        }
-        static Control getSubjectControl(){
-            return subjectControl;
-        }
+        
         static bool securityConditionRead(Control asset, Control subject) {
-            return asset >= subject;
+            return asset <= subject;
+            
     }
 
         static bool securityConditionWrite(Control asset, Control subject) {
-            return asset <= subject;
+            return asset >= subject;
     }
-    private:
-        static Control subjectControl;
 };
+
 

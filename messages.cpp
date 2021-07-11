@@ -17,6 +17,7 @@
 #include "messages.h" // a collection messages
 
 using namespace std;
+Control globalSubjectControl;
 
 /***********************************************
  * MESSAGES :: DISPLAY
@@ -28,6 +29,9 @@ void Messages::display() const
          it != messages.end();
          ++it)
          {
+             if(!Security::securityConditionRead(it->getAssetControl(), globalSubjectControl)){
+                    continue;
+                }
             it->displayProperties();
          }
 }
@@ -43,8 +47,12 @@ void Messages::show(int id) const
          ++it)
         {
             if (it->getID() == id){
-                if(!Security::securityConditionRead(it->getAssetControl(), Security::getSubjectControl()))
-                    throw "You do not have read access for this message";
+               
+                if(!Security::securityConditionRead(it->getAssetControl(), globalSubjectControl)){
+                    cout<< "You do not have read access for this message";
+                    break;
+                }
+                
                 it->displayText();
             }
         }
@@ -61,8 +69,10 @@ void Messages::update(int id, const string & text)
          ++it)
         {
             if (it->getID() == id){
-                if(!Security::securityConditionWrite(it->getAssetControl(), Security::getSubjectControl()))
-                    throw "You do not have write access for this message";
+                if(!Security::securityConditionWrite(it->getAssetControl(), globalSubjectControl)){
+                    cout<< "You do not have write access for this message";
+                    break;
+                }
                 it->updateText(text);
             }
         }
@@ -79,8 +89,10 @@ void Messages::remove(int id)
          ++it)
         {
             if (it->getID() == id){
-                if(!Security::securityConditionWrite( it->getAssetControl(), Security::getSubjectControl()))
-                    throw "You do not have permission to delete this message";
+                if(!Security::securityConditionWrite( it->getAssetControl(), globalSubjectControl)){
+                    cout<< "You do not have permission to delete this message";
+                    break;
+                }
                 it->clear();
             }
                 
@@ -130,8 +142,7 @@ void Messages::readMessages(const char * fileName)
 
         if (!fin.fail())
         {
-            Control control; //dummy data
-            Message message(text, author, date, control);
+            Message message(text, author, date, globalSubjectControl);
             messages.push_back(message);
         }
     }

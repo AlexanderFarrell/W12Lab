@@ -87,6 +87,9 @@ void session(Messages & messages)
             case 'r':
                 interact.remove();
                 break;
+            case 'x':
+                interact.getSubjectControl();
+                break;
             case 'l':
                 cout << "Goodbye, " << userName << ".\n";
                 return;

@@ -36,12 +36,13 @@ const int ID_INVALID = -1;
  * INTERACT constructor
  * Authenticat ethe user and get him/her all set up
  ***************************************************/
+
 Interact::Interact(const string & userName,
                    const string & password,
                    Messages & messages)
 {
     this->subjectControl = authenticate(userName, password);
-    Security::setSubjectControl(subjectControl);
+    globalSubjectControl = this->subjectControl;
     this->userName = userName;
     this->pMessages = &messages;
 }
@@ -73,7 +74,7 @@ void Interact::add()
     pMessages->add(promptForLine("message"),
                    userName,
                    promptForLine("date"),
-                   Security::getSubjectControl());
+                   globalSubjectControl);
 }
 
 /****************************************************
@@ -145,8 +146,14 @@ Control Interact::authenticate(const string & userName,
     int id = idFromUser(userName);
     bool authenticated = false;
     if (ID_INVALID != id && password == string(users[id].password))
+    {
         authenticated = true;
         return users[id].control;
+    }
+    else{
+        cout << "You have unsuccessfully typed the word \"password\", goodbye\n";
+        throw "";
+    }
 }
 
 /****************************************************
